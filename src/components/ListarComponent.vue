@@ -1,5 +1,8 @@
 <template>
 <div class="container">
+
+  <router-link to="/crear" class="btn btn-success">Agregar empleado</router-link> 
+  <br><br>
   <div class="card">
     <div class="card-header">
       Empleados
@@ -20,8 +23,12 @@
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.correo}}</td>
             <td>
-              <a name="" id="" class="btn btn-primary" href="" role="button">Editar</a>
-              <a name="" id="" class="btn btn-primary" href="" role="button">Borrar</a>
+             
+              <div class="btn-group" role="group" aria-label="">
+                <router-link :to="{name:'editar', params:{id:empleado.id}}" class="btn btn-info">Editar</router-link>
+                <button type="button" v-on:click="borrarEmpleado(empleado.id)" class="btn btn-danger">Borrar</button>
+              </div>
+    
             </td>
           </tr>
         </tbody>
@@ -35,7 +42,7 @@
 export default {
     data(){
       return{
-        empleados: []
+        empleados: {}
       } 
     },
   created: function(){
@@ -58,7 +65,20 @@ export default {
       .catch(console.log)
 
 
+    },
+    borrarEmpleado(id){fetch('http://localhost/api/?borrar='+ id)
+      .then(respuesta=>respuesta.json())
+      .then((datosRespuesta)=>{
+        
+        
+        console.log(datosRespuesta);
+        window.location.href='listar'
+
+      })
+      .catch(console.log(id))
+      
     }
+
   }
 }
 </script>
